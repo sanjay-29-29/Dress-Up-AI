@@ -22,12 +22,12 @@ class GetLogger:
 
 
 class Predictor:
-    def __init__(self):
+    def __init__(self, config_path, model_weights):
         cfg = get_cfg()
         add_densepose_config(cfg)
-        self.default_config_path = str(Path.cwd()) + "/model_configs/" + "densepose_rcnn_R_50_FPN_s1x.yaml"
+        self.default_config_path = config_path
         cfg.merge_from_file(self.default_config_path)
-        cfg.MODEL.WEIGHTS = str(Path.cwd()) + "/models/" + "model_final_162be9.pkl"
+        cfg.MODEL.WEIGHTS = model_weights
         cfg.MODEL.DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
         cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # Adjust as needed
         self.predictor = DefaultPredictor(cfg)
@@ -46,4 +46,3 @@ class Predictor:
         self.visualizer.visualize(out_frame_seg, outputs)
 
         return (out_frame, out_frame_seg)
-
