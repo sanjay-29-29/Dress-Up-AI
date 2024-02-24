@@ -1,4 +1,4 @@
-from utils.helper import GetLogger, Predictor
+from densepose_model.helper import GetLogger, Predictor
 import os
 import argparse
 import cv2
