@@ -1,3 +1,4 @@
 densepose_model/model_configs
 densepose_model/models
 Self-Correction-Human-Parsing/pretrain_model
+__pycache__
