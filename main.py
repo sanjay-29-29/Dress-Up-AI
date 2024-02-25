@@ -1,4 +1,4 @@
-from densepose_model.main_densepose import main as densepose
+from dpm.main_densepose import main as densepose
 from schp.main_schp import main as schp
 
 dense_path = densepose(input_path='./test/image.jpg', 

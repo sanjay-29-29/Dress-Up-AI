@@ -1,5 +1,5 @@
-densepose_model/model_configs
-densepose_model/models
-Self-Correction-Human-Parsing/pretrain_model
-./densepose/__pycache__
+dpm/model_configs
+dpm/models
+schp/pretrain_model
+./dpm/__pycache__
 ./schp/__pycache__
