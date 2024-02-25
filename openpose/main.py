@@ -1,3 +1,4 @@
+#todo
 import sys
 import cv2
 import os
@@ -13,9 +14,9 @@ except ImportError as e:
     print('Error: OpenPose library could not be found. Did you enable `BUILD_PYTHON` in CMake and have this Python script in the right folder?')
     raise e
 
-def process_image(image_path, output_path):
+def process_image(image_path, output_path, model_path):
     params = dict()
-    params["model_folder"] = "./openpose/models"
+    params["model_folder"] = model_path
     params["hand"] = True
     params["disable_blending"] = True
     params["write_json"] = './test'
@@ -32,13 +33,13 @@ def process_image(image_path, output_path):
     output_image_path = output_path + filename + "_overlay.jpg" 
     cv2.imwrite(output_image_path, datum.cvOutputData)  
 
-def main(image_dir, output_path):
+def main(image_dir, output_path, model_path = './openpose/models'):
     for filename in os.listdir(image_dir):
-        if filename.endswith('.jpg') or filename.endswith('.png'):  # Process images only
+        if filename.endswith('.jpg') or filename.endswith('.png'): 
             image_path = os.path.join(image_dir, filename)
-            process_image(image_path, output_path) 
+            process_image(image_path, output_path, model_path) 
 
 if __name__ == "__main__":
-    image_dir = "./test"  # Example input directory
-    output_path = "./test"  # Example output prefix
+    image_dir = "./test/image" 
+    output_path = "./test/openpose"  
     main(image_dir, output_path) 

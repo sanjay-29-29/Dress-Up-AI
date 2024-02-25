@@ -4,3 +4,4 @@ schp/pretrain_model
 ./dpm/__pycache__
 ./schp/__pycache__
 openpose/models
+StableVTION/ckpts
