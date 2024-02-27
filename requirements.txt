@@ -6,6 +6,4 @@ diffusers
 transformers
 xformers==0.0.23
 einops
-torch
-torchvision
-torchaudio
+
