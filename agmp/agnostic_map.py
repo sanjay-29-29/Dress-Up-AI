@@ -94,6 +94,7 @@ if __name__ =="__main__":
                 pose_data = pose_label['people'][0]['pose_keypoints_2d']
                 pose_data = np.array(pose_data)
                 pose_data = pose_data.reshape((-1, 3))[:, :2]
+        
         except IndexError:
             print(pose_name)
             continue
@@ -111,17 +112,28 @@ if __name__ =="__main__":
 def main(data_path, output_path, mask_path):
     os.makedirs(output_path, exist_ok=True)
     os.makedirs(mask_path, exist_ok=True)
-
+    
     for im_name in tqdm(os.listdir(osp.join(data_path, 'image'))):
+        
+        # load pose image
         pose_name = osp.splitext(im_name)[0] + '_keypoints.json'
 
         try:
-            # ... (Your code to load pose data) ...
+            with open(osp.join(data_path, 'openpose_json', pose_name), 'r') as f:
+                pose_label = json.load(f)
+                pose_data = pose_label['people'][0]['pose_keypoints_2d']
+                pose_data = np.array(pose_data)
+                pose_data = pose_data.reshape((-1, 3))[:, :2]
+        
         except IndexError:
             print(pose_name)
             continue
 
         # ... (Your code to load parsing image) ...
+        im = Image.open(osp.join(data_path, 'image', im_name))
+        label_name = osp.splitext(im_name)[0] + '.png'
+        im_label = Image.open(osp.join(data_path, 'image-parse-v3', label_name))
+
 
         agnostic, mask = get_img_agnostic(im, im_label, pose_data)
 

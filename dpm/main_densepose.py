@@ -58,27 +58,38 @@ def build_args():
     args = parser.parse_args()
     return args
 
-def main(input_path, output_path, config_path=None, weights=None):
+def main(input_dir, output_dir, config_path=None, weights=None):
+    # Default paths (modify as needed)
     if config_path is None:
-        config_path = '/home/pc/Documents/dress-up-api/densepose/model_configs/densepose_rcnn_R_50_FPN_s1x.yaml' #change it accordingly
+        config_path = '/home/pc/Documents/dress-up-api/dpm/model_configs/densepose_rcnn_R_50_FPN_s1x.yaml'
     if weights is None:
-        weights = '/home/pc/Documents/dress-up-api/densepose/models/model_final_162be9.pkl' #change it accordingly
+        weights = '/home/pc/Documents/dress-up-api/dpm/models/model_final_162be9.pkl' 
 
-    logger = GetLogger.logger(__name__)
+    logger = GetLogger.logger(__name__)  # Assuming you have a GetLogger class
+
     predictor = Predictor(config_path=config_path, model_weights=weights)
-    image = cv2.imread(input_path)
     
-    if image is None:
-        logger.error(f"Could not read the image: {input_path}")
-        return
-    #processing
-    out_frame, out_frame_seg = predictor.predict(image)
-    input_filename, input_extension = os.path.splitext(os.path.basename(input_path))
+    os.makedirs(output_dir, exist_ok=True)
 
-    #saving
-    cv2.imwrite(output_path, out_frame_seg)
-    print(f"DensePose image saved at {output_path}")
-    return output_path
+
+    for filename in os.listdir(input_dir):
+        if filename.endswith(".jpg") or filename.endswith(".png"):  # Check for common image formats
+            input_path = os.path.join(input_dir, filename)
+
+            image = cv2.imread(input_path)
+            if image is None:
+                logger.error(f"Could not read the image: {input_path}")
+                continue  # Skip to the next image
+
+            # Processing
+            out_frame, out_frame_seg = predictor.predict(image)
+
+            input_filename, input_extension = os.path.splitext(filename)  # No need for basename in this case
+            output_path = os.path.join(output_dir, input_filename + input_extension)
+
+            # Saving
+            cv2.imwrite(output_path, out_frame_seg)
+            print(f"DensePose image saved at {output_path}")
  
 
 if __name__ == "__main__":
