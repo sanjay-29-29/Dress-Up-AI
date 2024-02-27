@@ -42,7 +42,7 @@ def run_agmp():
          mask_path= './data/test/agnostic-mask'
         )
     print("Done... AGMP")
-    agmp.set()
+    agmp_done.set()
     
 def run_stv():
     #op_done.wait()

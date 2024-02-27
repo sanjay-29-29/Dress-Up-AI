@@ -4,7 +4,7 @@ ninja
 pytorch_lightning
 diffusers 
 transformers
-xformers
+xformers==0.0.23
 einops
 torch
 torchvision
