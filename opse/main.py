@@ -39,14 +39,14 @@ def process_image(image_path, output_path, json_path, model_path):
     if os.path.exists(temp_json_path):   # Check if OpenPose wrote the file
         os.rename(temp_json_path, output_json_path)
 
-def main(image_dir, output_path, json_path, model_path = './models'):
+def main(image_dir, output_path, json_path, model_path = './opse/models'):
     for filename in os.listdir(image_dir):
         if filename.endswith('.jpg') or filename.endswith('.png'): 
             image_path = os.path.join(image_dir, filename)
             process_image(image_path, output_path, json_path, model_path) 
 
 if __name__ == "__main__":
-    image_dir = "./test/image" 
-    output_path = "./test/openpose"
-    json_path = './test/openpose-json'  
+    image_dir = "./data/test/image" 
+    output_path = "./data/test/openpose"
+    json_path = './data/test/openpose-json'  
     main(image_dir, output_path, json_path) 
