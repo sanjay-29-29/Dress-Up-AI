@@ -4,6 +4,5 @@ ninja
 pytorch_lightning
 diffusers 
 transformers
-xformers==0.0.23
 einops
-
+torchmetrics==0.11.4
