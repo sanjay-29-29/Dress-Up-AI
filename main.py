@@ -1,7 +1,7 @@
 from dpm.main_densepose import main as densepose
 from schp.main_schp import main as schp
 #from openpose.main import main as op
-from STVN.main import main as stv
+from main_stbl import main as stv
 from agmp.agnostic_map import main as agmp
 
 densepose(input_path='./data/test/image/image.jpg', 
