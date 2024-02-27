@@ -5,3 +5,4 @@ pytorch_lightning
 diffusers 
 transformers
 xformers
+einops
