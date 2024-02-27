@@ -108,11 +108,7 @@ if __name__ =="__main__":
         mask.save(osp.join(mask_path, im_name))
         return 
 
-def main():
-    data_path = './data'
-    output_path = './data/agnostic-v3.2'
-    mask_path = './data/agnostic-mask'
-    
+def main(data_path, output_path, mask_path):
     os.makedirs(output_path, exist_ok=True)
     os.makedirs(mask_path, exist_ok=True)
     
