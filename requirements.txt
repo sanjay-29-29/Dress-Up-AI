@@ -6,3 +6,6 @@ diffusers
 transformers
 xformers
 einops
+torch
+torchvision
+torchaudio
