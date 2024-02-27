@@ -4,24 +4,24 @@ from schp.main_schp import main as schp
 from STVN.main import main as stv
 from agmp.agnostic_map import main as agmp
 
-densepose(input_path='./data/test/image.jpg', 
-                       output_path='./data/test/densepose.jpg', 
+densepose(input_path='./data/test/image/image.jpg', 
+                       output_path='./data/test/image-densepose/densepose.jpg', 
                        weights='./dpm/models/model_final_162be9.pkl', 
                        config_path='./dpm/model_configs/densepose_rcnn_R_50_FPN_s1x.yaml'
                     )
 
-schp(input_path='./data/test/image.jpg',
-                 output_path='./data/test/schp.png',
+schp(input_path='./data/test/image',
+                 output_path='./data/test/image-parse-v3',
                  weights='./schp/pretrain_model/exp-schp-201908261155-lip.pth'
             )
 
-agmp(input_path = './data',
-     output_path= './data/agnostic-v3.2',
-     mask_path= './data/agnostic-mask'
+agmp(data_path = './data/test',
+     output_path= './data/test/agnostic-v3.2',
+     mask_path= './data/test/agnostic-mask'
      )
             
-StableVITON_out = stv(config_path='./StableVITON/configs/VITON512.yaml', 
+StableVITON_out = stv(config_path='./configs/VITON512.yaml', 
                       data = './data', 
                       output_path='output', 
-                      weights='./StableVITON/ckpts/VITONHD.ckpt'
+                      weights='/content/drive/MyDrive/VITONHD.ckpt'
                   )
