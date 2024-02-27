@@ -106,7 +106,7 @@ if __name__ =="__main__":
         agnostic, mask = get_img_agnostic(im, im_label, pose_data)
         agnostic.save(osp.join(output_path, im_name))
         mask.save(osp.join(mask_path, im_name))
-        return 
+        
 
 def main(data_path, output_path, mask_path):
     os.makedirs(output_path, exist_ok=True)
