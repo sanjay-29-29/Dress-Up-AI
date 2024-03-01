@@ -4,6 +4,11 @@ from schp.main_schp import main as schp
 from main_stbl import main as stv
 from agmp.agnostic_map import main as agmp
 import threading
+import argparse
+
+argparser = argparse.ArgumentParser(description='DensePose')
+argparser.add_argument('--stv', type=str, default='./content/drive/MyDrive/VITONHD.ckpt', help='input directory')
+args = argparser.parse_args()
 
 def run_densepose():
     print("Starting densepose")
@@ -46,6 +51,7 @@ def run_agmp():
     
 def run_stv():
     #op_done.wait()
+    global args
     densepose_done.wait()
     schp_done.wait()
     agmp_done.wait()
@@ -53,7 +59,7 @@ def run_stv():
     stv(config_path='./configs/VITON512.yaml', 
         data = './data', 
         output_path='output', 
-        weights='/content/drive/MyDrive/VITONHD.ckpt'
+        weights= args.stv
        )
     print("Done...")
 
