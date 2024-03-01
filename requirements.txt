@@ -6,4 +6,4 @@ diffusers
 transformers
 einops
 torchmetrics==0.11.4
-xformers
+xformers==0.0.23.post1
