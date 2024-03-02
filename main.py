@@ -6,25 +6,26 @@ from agmp.agnostic_map import main as agmp
 import threading
 import argparse
 
-argparser = argparse.ArgumentParser(description='DensePose')
+argparser = argparse.ArgumentParser(description='Virtual Try-On')
 argparser.add_argument('--stv', type=str, default='./content/drive/MyDrive/VITONHD.ckpt', help='input directory')
+argparser.add_argument('--data', type=str, default='./data', help='input directory')
 args = argparser.parse_args()
 
 def run_densepose():
     print("Starting densepose")
-    densepose(input_dir='./data/test/image', 
-              output_dir='./data/test/image-densepose', 
-              weights='./dpm/models/model_final_162be9.pkl', 
-              config_path='./dpm/model_configs/densepose_rcnn_R_50_FPN_s1x.yaml'
+    densepose(input_dir = args.data+'/test/image', 
+              output_dir = args.data+ '/test/image-densepose', 
+              weights = './dpm/models/model_final_162be9.pkl', 
+              config_path = './dpm/model_configs/densepose_rcnn_R_50_FPN_s1x.yaml'
              )
     print('Done... DensePose')
     densepose_done.set()
 
 def run_schp():
     print("Starting SCHP")
-    schp(input_path='./data/test/image',
-         output_path='./data/test/image-parse-v3',
-         weights='./schp/pretrain_model/exp-schp-201908261155-lip.pth'
+    schp(input_path = args.data+ '/test/image',
+         output_path = args.data+ '/test/image-parse-v3',
+         weights = './schp/pretrain_model/exp-schp-201908261155-lip.pth'
         )
     print("Done... SCHP")
     schp_done.set()
@@ -42,9 +43,9 @@ def run_schp():
 def run_agmp():
     schp_done.wait()
     print("Starting AGMP")
-    agmp(data_path = './data/test',
-         output_path= './data/test/agnostic-v3.2',
-         mask_path= './data/test/agnostic-mask'
+    agmp(data_path = args.data + '/test',
+         output_path = args.data + '/test/agnostic-v3.2',
+         mask_path = args.data + '/test/agnostic-mask'
         )
     print("Done... AGMP")
     agmp_done.set()
@@ -57,13 +58,11 @@ def run_stv():
     agmp_done.wait()
     print("Starting StableVITON")
     stv(config_path='./configs/VITON512.yaml', 
-        data = './data', 
+        data = args.data , 
         output_path='output', 
         weights= args.stv
        )
     print("Done...")
-
-
 
 if __name__ == "__main__":
     densepose_done = threading.Event()
