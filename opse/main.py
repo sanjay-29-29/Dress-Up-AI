@@ -48,5 +48,5 @@ def main(image_dir, output_path, json_path, model_path = './opse/models'):
 if __name__ == "__main__":
     image_dir = "./data/test/image" 
     output_path = "./data/test/openpose"
-    json_path = './data/test/openpose-json'  
+    json_path = './data/test/openpose_json'  
     main(image_dir, output_path, json_path) 
