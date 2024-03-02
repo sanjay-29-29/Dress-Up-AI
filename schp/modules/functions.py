@@ -15,7 +15,7 @@ _backend = load(name="inplace_abn",
                     "inplace_abn_cuda.cu",
                     "inplace_abn_cuda_half.cu"
                 ]],
-                extra_cuda_cflags=["--expt-extended-lambda"])
+                extra_cuda_cflags=[])
 
 # Activation names
 ACT_RELU = "relu"
