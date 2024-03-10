@@ -5,3 +5,4 @@ schp/pretrain_model
 ./schp/__pycache__
 opse/models
 ckpts/
+openpose_build/models
