@@ -1,10 +1,11 @@
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import FileResponse
-#from main import run_tasks
+from main import run_tasks
 from PIL import Image
 import io
 import pymongo
 from datetime import datetime
+from pyngrok import ngrok
 
 
 app = FastAPI()
@@ -40,6 +41,7 @@ async def upload_image(image: UploadFile = File(...), cloth: UploadFile = File(.
 
     return FileResponse('./data/output/unpair/image_cloth.jpg', media_type='image/jpeg')
 
-
+public_url = ngrok.connect(port='8000', proto='http', options={"bind_tls": True})
+print("Tracking URL:", public_url)
 
 
