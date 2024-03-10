@@ -112,16 +112,6 @@ distribute/
 3rdparty/*zip
 3rdparty/windows/*zip
 
-######################### Compilation (build, distribute & bins) Files / Folders #########################
-*.bin
-*.testbin
-build
-build*
-.build*
-*cmake_build
-distribute/*
-python/caffe/proto/
-
 ######################### Generated Documentation #########################
 _site
 docs/_site
