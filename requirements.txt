@@ -1,9 +1,15 @@
 git+https://github.com/facebookresearch/detectron2.git
 git+https://github.com/johnnynunez/detectron2@main#subdirectory=projects/DensePose 
 ninja
+fastapi
 pytorch_lightning
 diffusers 
 transformers
 einops
 torchmetrics==0.11.4
 xformers==0.0.23.post1
+jsonify 
+pymongo 
+pyngrok 
+python-multipart 
+uvicorn

@@ -5,7 +5,11 @@ from main_stbl import main as stv
 from agmp.agnostic_map import main as agmp
 import threading
 import argparse
-import jsonify
+from pyngrok import ngrok
+import uvicorn
+from fastapi import FastAPI, File, UploadFile
+from fastapi.responses import FileResponse
+from PIL import Image
 
 argparser = argparse.ArgumentParser(description='Virtual Try-On')
 argparser.add_argument('--stv', type=str, default='./content/drive/MyDrive/VITONHD.ckpt', help='input directory')
@@ -17,6 +21,13 @@ densepose_done = threading.Event()
 schp_done = threading.Event()
 agmp_done = threading.Event()
 op_done = threading.Event()
+
+app = FastAPI()
+
+def run_server():
+    uvicorn.run("api:app", host="0.0.0.0", port=8000)
+
+threading.Thread(target=run_server).start()
 
 def run_densepose():
     print("Starting densepose")
@@ -39,7 +50,7 @@ def run_schp():
 
 def run_op():
     print("Starting OpenPose")
-    op(image_dir='./data/image',
+    op(image_dir='./data/test/image',
        json_path='./data/test/openpose_json',
        output_path='./data/test/openpose',
        model_path='./opse/models'
@@ -76,7 +87,28 @@ def run_stv():
        )
     print("Done...")
 
-def run_tasks():
+@app.post("/change_cloth")
+async def upload_image(image: UploadFile = File(...), cloth: UploadFile = File(...)):
+    cloth_contents = await cloth.read()
+    image_contents = await image.read() 
+    try:
+        with Image.open(io.BytesIO(cloth_contents)) as im_cloth:
+           im_cloth.save("./data/test/cloth/cloth.jpg")
+
+        with Image.open(io.BytesIO(image_contents)) as im_image:
+           im_image.save("./data/test/image/image.jpg")
+
+        '''transaction_record = {
+            "timestamp": datetime.now(),
+            "image_filename": image.filename,
+            "image_size": len(image_contents),
+            "cloth_filename": cloth.filename,
+            "cloth_size": len(cloth_contents)
+        }
+        collection.insert_one(transaction_record)'''  
+
+    except Exception as e:
+        return {"message": f"Error processing the image: {str(e)}"}
 
     densepose_thread = threading.Thread(target=run_densepose)
     schp_thread = threading.Thread(target=run_schp)
@@ -87,18 +119,26 @@ def run_tasks():
     densepose_thread.start()
     schp_thread.start()
     agmp_thread.start()
-    stv_thread.start()
+    op_thread.start()
 
     densepose_thread.join()
     schp_thread.join()
     agmp_thread.join()
+    op_thread.join()
+
+    stv_thread.start()
     stv_thread.join()
+    
+    return FileResponse('./data/output/unpair/image_cloth.jpg', media_type='image/jpeg')
 
-    return jsonify({'message': 'All tasks completed!'}), 200
 
-if __name__ == "__main__":
+ngrok.set_auth_token("2dVBJw5G2bExzQ41keUUDtC0U8K_7zn55apnGM8YJ3RNsfznb")
+public_url = ngrok.connect(8000)
+print("Tracking URL:", public_url)
+
+#if __name__ == "__main__":
                
-    densepose_done = threading.Event()
+    '''densepose_done = threading.Event()
     schp_done = threading.Event()
     agmp_done = threading.Event()
     op_done = threading.Event()
@@ -112,16 +152,16 @@ if __name__ == "__main__":
     densepose_thread.start()
     schp_thread.start()
     agmp_thread.start()
-    stv_thread.start()
     op_thread.start()
 
     densepose_thread.join()
     schp_thread.join()
     agmp_thread.join()
-    stv_thread.join()
     op_thread.join()
 
-    print("All tasks completed!")
+    stv_thread.start()
+    stv_thread.join()
+    print("All tasks completed!")'''
 
 
 
