@@ -1,3 +1,0 @@
-/home/pc/Documents/dress-up-ai/StableVITON/custom_data_preprocessing/openpose/CMakeFiles/openpose_lib.dir
-/home/pc/Documents/dress-up-ai/StableVITON/custom_data_preprocessing/openpose/CMakeFiles/edit_cache.dir
-/home/pc/Documents/dress-up-ai/StableVITON/custom_data_preprocessing/openpose/CMakeFiles/rebuild_cache.dir

@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC  -fopenmp  -mavx -march=native -fopenmp -O3 -shared -Wl,-soname,libopenpose_thread.so -o libopenpose_thread.so CMakeFiles/openpose_thread.dir/defineTemplates.cpp.o  -Wl,-rpath,/home/pc/Documents/dress-up-ai/StableVITON/custom_data_preprocessing/openpose/build/src/openpose/core: ../core/libopenpose_core.so 
