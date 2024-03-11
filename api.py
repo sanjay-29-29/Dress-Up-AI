@@ -29,7 +29,7 @@ def run_server():
     ngrok.set_auth_token("2dVBJw5G2bExzQ41keUUDtC0U8K_7zn55apnGM8YJ3RNsfznb")
     public_url = ngrok.connect(8000)
     print("Tracking URL:", public_url)
-    uvicorn.run("main:app", host="127.0.0.1", port=8000)
+    uvicorn.run("api:app", host="127.0.0.1", port=8000)
 
 def run_module(module_func, module_done_event, dependencies=[]):
     def run_and_signal():
@@ -116,7 +116,8 @@ def run_stv():
     stv(config_path='./configs/VITON512.yaml', 
         data = args.data , 
         output_path='output', 
-        weights= args.stv
+        weights= args.stv,
+        is_api=True
        )
     print("Done...")
 

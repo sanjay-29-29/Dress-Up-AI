@@ -28,7 +28,7 @@ def tensor2img(x):
     return x
 
 @torch.no_grad()
-def main(config_path, weights, data, output_path, batch_size=1, repaint=True, unpair=True, denoise_steps=50, img_H=512, img_W=384, eta=0.0):
+def main(config_path, weights, data, output_path, batch_size=1, repaint=True, unpair=True, denoise_steps=50, img_H=512, img_W=384, eta=0.0, is_api=False):
     batch_size = batch_size
     img_H = img_H
     img_W = img_W
@@ -50,7 +50,8 @@ def main(config_path, weights, data, output_path, batch_size=1, repaint=True, un
         img_W=img_W,
         is_paired=not unpair,
         is_test=True,
-        is_sorted=True
+        is_sorted=True,
+        is_api=is_api
     )
     dataloader = DataLoader(dataset, num_workers=4, shuffle=False, batch_size=batch_size, pin_memory=True)
 

@@ -67,7 +67,8 @@ class VITONHDDataset(Dataset):
             img_W, 
             is_paired=True, 
             is_test=False, 
-            is_sorted=False,             
+            is_sorted=False, 
+            is_api=False,            
             **kwargs
         ):
         self.drd = data_root_dir
@@ -81,11 +82,18 @@ class VITONHDDataset(Dataset):
         
         im_names = []
         c_names = []
-        with open(opj(self.drd, f"{self.data_type}_pairs.txt"), "r") as f:
-            for line in f.readlines():
-                im_name, c_name = line.strip().split()
-                im_names.append(im_name)
-                c_names.append(c_name)
+        if is_api:
+            with open(opj(self.drd, f"{self.data_type}_pairs_api.txt"), "r") as f:
+                for line in f.readlines():
+                    im_name, c_name = line.strip().split()
+                    im_names.append(im_name)
+                    c_names.append(c_name)
+        else:
+            with open(opj(self.drd, f"{self.data_type}_pairs.txt"), "r") as f:
+                for line in f.readlines():
+                    im_name, c_name = line.strip().split()
+                    im_names.append(im_name)
+                    c_names.append(c_name)
         if is_sorted:
             im_names, c_names = zip(*sorted(zip(im_names, c_names)))
         self.im_names = im_names
