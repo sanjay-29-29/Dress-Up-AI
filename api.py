@@ -1,27 +1,14 @@
-import threading
-import albumentations
-from threading import Event
-from PIL import Image
 import io
-import argparse
 import uvicorn
 import asyncio
+import threading
+from PIL import Image
+import albumentations
+from threading import Event
 from pyngrok import ngrok
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import FileResponse
-
-
-from dpm.main_densepose import main as densepose
-from schp.main_schp import main as schp
-from opse.main import main as op
-from main_stbl import main as stv
-from agmp.agnostic_map import main as agmp
-
-argparser = argparse.ArgumentParser(description='Virtual Try-On')
-argparser.add_argument('--stv', type=str, default='/content/drive/MyDrive/VITONHD.ckpt', help='input directory')
-argparser.add_argument('--data', type=str, default='./data', help='input directory')
-argparser.add_argument('--api', type=bool, default=False, help='API Yes/No')
-args = argparser.parse_args()
+from utils import run_densepose, run_agmp, run_schp, run_stv, run_op
 
 app = FastAPI()
 
@@ -71,55 +58,6 @@ async def upload_image(image: UploadFile = File(...), cloth: UploadFile = File(.
         task.join()
 
     return FileResponse('./output/unpair/image_cloth.jpg', media_type='image/jpeg')
-
-def run_densepose():
-    print("Starting densepose")
-    densepose(input_dir = args.data+'/test/image', 
-              output_dir = args.data+ '/test/image-densepose', 
-              weights = './dpm/models/model_final_162be9.pkl', 
-              config_path = './dpm/model_configs/densepose_rcnn_R_50_FPN_s1x.yaml'
-             )
-    print('Done... DensePose')
-
-def run_schp():
-    print("Starting SCHP")
-    schp(input_path = args.data+ '/test/image',
-         output_path = args.data+ '/test/image-parse-v3',
-         weights = './schp/pretrain_model/exp-schp-201908261155-lip.pth'
-        )
-    print("Done... SCHP")
-
-def run_op():
-    print("Starting OpenPose")
-    op(image_dir='./data/test/image',
-       json_path='./data/test/openpose_json',
-       output_path='./data/test/openpose',
-       model_path='./opse/models'
-      )
-    print("Done... OpenPose")
-
-def run_agmp():
-    print("Starting AGMP")
-    agmp(data_path = args.data + '/test',
-         output_path = args.data + '/test/agnostic-v3.2',
-         mask_path = args.data + '/test/agnostic-mask'
-        )
-    print("Done... AGMP")
-    
-def run_stv():
-
-    ''' Runs StableVITON 
-        args: No args required'''
-    
-    global args
-    print("Starting StableVITON")
-    stv(config_path='./configs/VITON512.yaml', 
-        data = args.data , 
-        output_path='output', 
-        weights= args.stv,
-        is_api=True
-       )
-    print("Done...")
 
 if __name__ == "__main__":
     threading.Thread(target=run_server).start()
