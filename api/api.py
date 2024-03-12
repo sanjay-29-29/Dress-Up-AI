@@ -1,16 +1,27 @@
 import io
+import base64
 import uvicorn
 import asyncio
 import threading
-from PIL import Image
 import albumentations
-from threading import Event
+
+from PIL import Image
 from pyngrok import ngrok
+from threading import Event
+from fastapi.responses import Response
 from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import FileResponse
+from starlette.middleware.cors import CORSMiddleware
 from utils import run_densepose, run_agmp, run_schp, run_stv, run_op
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True, 
+    allow_methods=["*"], 
+    allow_headers=["*"], 
+)
 
 def run_server():
     ngrok.set_auth_token("2dVBJw5G2bExzQ41keUUDtC0U8K_7zn55apnGM8YJ3RNsfznb")
@@ -51,13 +62,17 @@ async def upload_image(image: UploadFile = File(...), cloth: UploadFile = File(.
         run_module(run_schp, schp_done),
         run_module(run_op, op_done),
         run_module(run_agmp, agmp_done, [op_done, schp_done]),
-        run_module(run_stv, threading.Event(), [densepose_done, schp_done, agmp_done, op_done])  # Simplified stv call
+        run_module(run_stv, threading.Event(), [densepose_done, schp_done, agmp_done, op_done])
     ]
 
     for task in tasks:
         task.join()
 
-    return FileResponse('./output/unpair/image_cloth.jpg', media_type='image/jpeg')
+    with open("./output/unpair/image_cloth.jpg", "rb") as f:
+        image_bytes = f.read()
+        encoded_image = base64.b64encode(image_bytes).decode('utf-8')
+
+    return Response(content=encoded_image, media_type="text/plain")
 
 if __name__ == "__main__":
     threading.Thread(target=run_server).start()
