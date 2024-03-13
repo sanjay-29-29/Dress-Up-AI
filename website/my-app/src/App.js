@@ -50,7 +50,7 @@ const handleApiCall = async () => {
   formData.append('image', selectedFile2.file); 
 
   try {
-    const response = await axios.post('https://e5f7-34-34-25-229.ngrok-free.app/change_cloth', formData, {
+    const response = await axios.post('https://glowing-polite-porpoise.ngrok-free.app/change_cloth', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

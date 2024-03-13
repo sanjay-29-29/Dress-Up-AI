@@ -25,7 +25,7 @@ app.add_middleware(
 
 def run_server():
     ngrok.set_auth_token("2dVBJw5G2bExzQ41keUUDtC0U8K_7zn55apnGM8YJ3RNsfznb")
-    public_url = ngrok.connect(8000)
+    public_url = ngrok.connect(addr="glowing-polite-porpoise.ngrok-free.app", proto="http", name="http")
     print("Tracking URL:", public_url)
     uvicorn.run("api:app", host="127.0.0.1", port=8000)
 
