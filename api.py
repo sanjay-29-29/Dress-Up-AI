@@ -6,7 +6,7 @@ import threading
 import albumentations
 
 from PIL import Image
-from pyngrok import ngrok
+import ngrok
 from threading import Event
 from fastapi.responses import Response
 from fastapi import FastAPI, File, UploadFile
@@ -25,8 +25,7 @@ app.add_middleware(
 
 def run_server():
     ngrok.set_auth_token("2dVBJw5G2bExzQ41keUUDtC0U8K_7zn55apnGM8YJ3RNsfznb")
-    public_url = ngrok.connect(addr="glowing-polite-porpoise.ngrok-free.app", proto="http", name="http")
-    print("Tracking URL:", public_url)
+    listener = ngrok.forward("127.0.0.1:8000", authtoken_from_env=True, domain="glowing-polite-porpoise.ngrok-free.app")
     uvicorn.run("api:app", host="127.0.0.1", port=8000)
 
 def run_module(module_func, module_done_event, dependencies=[]):
@@ -76,3 +75,4 @@ async def upload_image(image: UploadFile = File(...), cloth: UploadFile = File(.
 
 if __name__ == "__main__":
     threading.Thread(target=run_server).start()
+
