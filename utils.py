@@ -38,13 +38,15 @@ def run_agmp():
         )
     print("Done... AGMP")
     
-def run_stv():
+def run_stv(is_api=False):
     global args
     print("Starting StableVITON")
     stv(config_path='./configs/VITON512.yaml', 
         data = './data' , 
         output_path='output', 
         weights='/content/drive/MyDrive/VITONHD.ckpt',
-        is_api=False
+        is_api=is_api,
+        img_H = 1280,
+        img_W = 576
        )
     print("Done...")
