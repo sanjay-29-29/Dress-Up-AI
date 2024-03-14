@@ -5,7 +5,6 @@ import argparse
 argparser = argparse.ArgumentParser(description='Virtual Try-On')
 argparser.add_argument('--stv', type=str, default='/content/drive/MyDrive/VITONHD.ckpt', help='input directory')
 argparser.add_argument('--data', type=str, default='./data', help='input directory')
-argparser.add_argument('--api', type=bool, default=False, help='API Yes/No')
 args = argparser.parse_args()
 
 if __name__ == "__main__":

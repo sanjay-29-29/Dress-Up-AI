@@ -45,6 +45,6 @@ def run_stv():
         data = './data' , 
         output_path='output', 
         weights='/content/drive/MyDrive/VITONHD.ckpt',
-        is_api=True
+        is_api=False
        )
     print("Done...")

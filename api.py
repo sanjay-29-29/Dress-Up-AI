@@ -28,11 +28,11 @@ def run_server():
     listener = ngrok.forward("127.0.0.1:8000", authtoken_from_env=True, domain="glowing-polite-porpoise.ngrok-free.app")
     uvicorn.run("api:app", host="127.0.0.1", port=8000)
 
-def run_module(module_func, module_done_event, dependencies=[]):
+def run_module(module_func, module_done_event, dependencies=[], *args, **kwargs):
     def run_and_signal():
         for dep in dependencies:
             dep.wait()  
-        module_func()
+        module_func(*args, **kwargs)
         module_done_event.set()
     thread = threading.Thread(target=run_and_signal)
     thread.start()
@@ -61,7 +61,7 @@ async def upload_image(image: UploadFile = File(...), cloth: UploadFile = File(.
         run_module(run_schp, schp_done),
         run_module(run_op, op_done),
         run_module(run_agmp, agmp_done, [op_done, schp_done]),
-        run_module(run_stv, threading.Event(), [densepose_done, schp_done, agmp_done, op_done])
+        run_module(run_stv, threading.Event(), [densepose_done, schp_done, agmp_done, op_done], is_api=True)
     ]
 
     for task in tasks:
