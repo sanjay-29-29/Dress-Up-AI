@@ -63,8 +63,8 @@ def run_stv(is_api=False):
         output_path='output', 
         weights='/content/drive/MyDrive/VITONHD.ckpt',
         is_api=is_api,
-        img_H = 1280,
-        img_W = 576
+        img_H = 512,
+        img_W = 384
        )
     print("Done...")
 
