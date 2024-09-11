@@ -5,6 +5,7 @@ import asyncio
 import threading
 import albumentations
 
+from pydantic import BaseModel
 from PIL import Image
 import ngrok
 from threading import Event
@@ -12,6 +13,10 @@ from fastapi.responses import Response
 from fastapi import FastAPI, File, UploadFile
 from starlette.middleware.cors import CORSMiddleware
 from utils import run_densepose, run_agmp, run_schp, run_stv, run_op
+
+class ModelData(BaseModel):
+    cloth_base64: str
+    image_base64: str
 
 app = FastAPI()
 
@@ -39,15 +44,21 @@ def run_module(module_func, module_done_event, dependencies=[], *args, **kwargs)
     return thread
 
 @app.post("/change_cloth")
-async def upload_image(image: UploadFile = File(...), cloth: UploadFile = File(...)):
-    cloth_contents = await cloth.read()
-    image_contents = await image.read() 
+async def upload_image(request: ModelData):
+    data = request.dict()
     try:
-        with Image.open(io.BytesIO(cloth_contents)) as im_cloth:
-           im_cloth.save("./data/test/cloth/cloth.jpg")
+        cloth_image = open("./data/test/cloth/cloth.jpg","wb")
+        cloth_image.write(data['cloth_base64'].decode('base64'))
+        cloth_image.close() 
+        
+        person_image = open("./data/test/image/image.jpg", "wb")
+        person_image.write(data['image_base64'].decode('base64'))
+        person_image.close()
+    # with Image.open(io.BytesIO(cloth_contents)) as im_cloth:
+    #    im_cloth.save("./data/test/cloth/cloth.jpg")
 
-        with Image.open(io.BytesIO(image_contents)) as im_image:
-           im_image.save("./data/test/image/image.jpg")
+    # with Image.open(io.BytesIO(image_contents)) as im_image:
+    #    im_image.save("./data/test/image/image.jpg")
     except Exception as e:
         return {"message": f"Error processing the image: {str(e)}"}
     
