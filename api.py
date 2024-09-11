@@ -47,20 +47,21 @@ def run_module(module_func, module_done_event, dependencies=[], *args, **kwargs)
 async def upload_image(request: ModelData):
     data = request.dict()
     try:
-        cloth_image = open("./data/test/cloth/cloth.jpg","wb")
-        cloth_image.write(data['cloth_base64'].decode('base64'))
-        cloth_image.close() 
+        # Decode the base64 data properly using base64 module
+        cloth_image_data = base64.b64decode(data['cloth_base64'])
+        with open("./data/test/cloth/cloth.jpg", "wb") as cloth_image:
+            cloth_image.write(cloth_image_data)
+
+        person_image_data = base64.b64decode(data['image_base64'])
+        with open("./data/test/image/image.jpg", "wb") as person_image:
+            person_image.write(person_image_data)
         
-        person_image = open("./data/test/image/image.jpg", "wb")
-        person_image.write(data['image_base64'].decode('base64'))
-        person_image.close()
-    # with Image.open(io.BytesIO(cloth_contents)) as im_cloth:
+    except Exception as e:
+        return {"message": f"Error processing the image: {str(e)}"}    # with Image.open(io.BytesIO(cloth_contents)) as im_cloth:
     #    im_cloth.save("./data/test/cloth/cloth.jpg")
 
     # with Image.open(io.BytesIO(image_contents)) as im_image:
     #    im_image.save("./data/test/image/image.jpg")
-    except Exception as e:
-        return {"message": f"Error processing the image: {str(e)}"}
     
     densepose_done = threading.Event()
     schp_done = threading.Event()
