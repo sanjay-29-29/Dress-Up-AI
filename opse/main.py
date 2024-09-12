@@ -23,6 +23,7 @@ def process_image_cli(image_path, output_path, json_path):
         '--write_images', output_path,
         '--write_json', output_json_dir,
         '--hand', '--disable_blending'
+        '--display','0'
     ]
 
     # Execute the OpenPose command
