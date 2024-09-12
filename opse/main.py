@@ -9,11 +9,10 @@ def process_image_cli(image_path, output_path, json_path):
 
     # Define output paths for image and JSON
     output_image_path = os.path.join(output_path, filename + "_rendered.png")
-    output_json_dir = os.path.join(json_path, filename)
     output_json_path = os.path.join(json_path, filename + "_keypoints.json")
     
     # Ensure the JSON output directory exists
-    os.makedirs(output_json_dir, exist_ok=True)
+    os.makedirs(json_path, exist_ok=True)
 
     # Command to run OpenPose using openpose.bin
     command = [
@@ -21,16 +20,17 @@ def process_image_cli(image_path, output_path, json_path):
         '--model_folder', './openpose/openpose/models',
         '--image_dir', image_path,
         '--write_images', output_path,
-        '--write_json', output_json_dir,
+        '--write_json', json_path,  # Save directly to the json_path
         '--hand',
         '--disable_blending',
         '--display', '0'
     ]
-        # Execute the OpenPose command
+    
+    # Execute the OpenPose command
     subprocess.run(command)
 
     # Move and rename the keypoints JSON file if it exists
-    temp_json_path = os.path.join(output_json_dir, '0_keypoints.json')
+    temp_json_path = os.path.join(json_path, '0_keypoints.json')
     if os.path.exists(temp_json_path):
         shutil.move(temp_json_path, output_json_path)
 
