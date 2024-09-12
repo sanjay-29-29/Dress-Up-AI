@@ -18,15 +18,15 @@ def process_image_cli(image_path, output_path, json_path):
     # Command to run OpenPose using openpose.bin
     command = [
         './openpose/openpose/build/examples/openpose/openpose.bin',
-        '--model_folder','./openpose/openpose/models',
+        '--model_folder', './openpose/openpose/models',
         '--image_dir', image_path,
         '--write_images', output_path,
         '--write_json', output_json_dir,
-        '--hand', '--disable_blending'
-        '--display','0'
+        '--hand',
+        '--disable_blending',
+        '--display', '0'
     ]
-
-    # Execute the OpenPose command
+        # Execute the OpenPose command
     subprocess.run(command)
 
     # Move and rename the keypoints JSON file if it exists
