@@ -36,11 +36,11 @@ def main(image_dir, output_path, json_path, model_path='./openpose/models'):
     # Ensure output and json directories exist
     os.makedirs(output_path, exist_ok=True)
     os.makedirs(json_path, exist_ok=True)
-
-    for filename in os.listdir(image_dir):
-        if filename.endswith('.jpg') or filename.endswith('.png'):
-            image_path = os.path.join(image_dir, filename)
-            process_image_cli(image_path, output_path, json_path)
+    process_image_cli(image_dir,output_path,json_path)
+#    for filename in os.listdir(image_dir):
+#        if filename.endswith('.jpg') or filename.endswith('.png'):
+#            image_path = os.path.join(image_dir, filename)
+#            process_image_cli(image_path, output_path, json_path)
 
 if __name__ == "__main__":
     image_dir = "./data/test/image" 
