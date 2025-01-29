@@ -1,0 +1,6 @@
+[submodule "frontend"]
+	path = frontend
+	url = git@github.com:DressUpAi/frontend.git
+[submodule "backend"]
+	path = backend
+	url = git@github.com:sathiyaseelan0712/Dress-Up-AI.git
